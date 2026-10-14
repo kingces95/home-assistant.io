@@ -46,6 +46,19 @@ In order for Rachio switches and sensors to update, your Home Assistant instance
 
 {% include integrations/config_flow.md %}
 
+{% include integrations/option_flow.md %}
+
+{% configuration_basic %}
+Duration in minutes to run when activating a zone switch:
+  description: "The maximum time a zone runs after you turn on its switch. The default is 10 minutes."
+Webhook public base URL:
+  description: "The public URL that receives Rachio webhook events. Use this option when your reverse proxy routes integrations by URL path. Leave it blank to use the standard Home Assistant or Home Assistant Cloud webhook URL."
+{% endconfiguration_basic %}
+
+Home Assistant appends the unique webhook ID to the **Webhook public base URL**. For example, if you enter `https://example.com/home/rachio`, Rachio sends events to `https://example.com/home/rachio/<webhook_id>`.
+
+Configure your reverse proxy to forward that path to `<home_assistant_url>/api/webhook/<webhook_id>`. Preserve the request method, headers, and body. The URL must not include credentials, a query string, or a fragment.
+
 **Water-saving suggestion:**<br>
 After setting up the integration, change the options to set the duration in minutes to run when activating a zone switch to a maximum failsafe value when using scripts to control zones. If something goes wrong with your script, Home Assistant, or you hit the Rachio API rate limit of 1700 calls per day, the controller will still turn off the zone after this amount of time.
 
